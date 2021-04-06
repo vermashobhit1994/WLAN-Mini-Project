@@ -7,10 +7,12 @@ Instructions to execute the project
 
 Dependencies Modules :
  1. Tkinter
+    
     Cmd Used : python3 -m pip install Tk
  
  3. ImageTK 
-     Cmd Used : sudo apt-get install python3-pil python3-pil.imagetk
+    
+    Cmd Used : sudo apt-get install python3-pil python3-pil.imagetk
  
  4. pywifi
 
