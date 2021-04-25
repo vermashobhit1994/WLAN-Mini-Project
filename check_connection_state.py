@@ -10,6 +10,7 @@ def check_connection_state():
         cmd_output= Popen_obj.decode( 'ascii',errors = 'backslashreplace')
         cmd_output = cmd_output[:-1]#remove the '\n'
         
+        
     except:
         #print("Please connect to internet first")
         return False
@@ -22,3 +23,5 @@ def display_msg_disconnect():
     DISCONNECT_WINDOW_MESSAGE = "Please connect to Internet first "
     messagebox.showinfo(DISCONNECT_WINDOW_NAME,DISCONNECT_WINDOW_MESSAGE)
 
+
+check_connection_state()

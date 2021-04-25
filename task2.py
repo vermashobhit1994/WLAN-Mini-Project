@@ -10,6 +10,9 @@ import convert_list_of_tuples
 import check_connection_state
 
 
+#module to extract mac address
+from getmac import get_mac_address as gma
+
 """ To extract address from ifconfig command """
 def extract_inet_mac_addr():
     #list that contains the inet address and mac address
@@ -33,12 +36,21 @@ def extract_inet_mac_addr():
 
         ############# Here the MAC Address is extracted only if inet address is found
         #Extract the device MAC Address and add it to device_addr_list
-        device_mac_addr_metadata = re.findall("HWaddr ([0-9 A-Z a-z]{2}\:[0-9 A-Z a-z]{2}\:[0-9 A-Z a-z]{2}\:[0-9 A-Z a-z]{2}\:[0-9 A-Z a-z]{2}\:[0-9 A-Z a-z]{2})",data)
+        
+        """ Delete it once the mac address extract is success.
+        device_mac_addr_metadata = re.findall("([0-9 A-Z a-z]{2}\:[0-9 A-Z a-z]{2}\:[0-9 A-Z a-z]{2}\:[0-9 A-Z a-z]{2}\:[0-9 A-Z a-z]{2}\:[0-9 A-Z a-z]{2})",data)
+        
+        print(device_mac_addr_metadata)
         
         #extract the mac address
-        device_mac_addr = device_mac_addr_metadata[1]
+        #device_mac_addr = device_mac_addr_metadata[1]
+        """
+        #extract the mac address
+        device_mac_addr = gma()
+       
         
         device_addr_list.append(device_mac_addr)
+        
         return device_addr_list
 
 #used to get the ip,mac and name of device
@@ -48,18 +60,26 @@ def Device_Details():
     #here it is done for current device  
     device_addr_list =  extract_inet_mac_addr()
     
+    print(device_addr_list)
+    
     #replace the last digit of ip address by 0/24 only if connected to internet
     try:
         #replace the last digit of ip address by 0 and add /24
         inet_search_addr = re.sub("[0-9]+\Z","0/24",device_addr_list[0]) 
         
     except:
-        #print("Please connect to internet first to search for ip address")
+        print("Please connect to internet first to search for ip address")
         return None
     else:
-        #search all the ip address and mac address 
-        cmd_meta_data = subprocess.check_output(['nmap','-sn',inet_search_addr])
-        cmd_data = cmd_meta_data.decode('utf-8',errors="backslashreplace")
+        cmd_data = ""
+        try:
+            #search all the ip address and mac address 
+            cmd_meta_data = subprocess.check_output(['nmap','-sn',inet_search_addr])
+        except Exception as err:
+            print("Error in nmap")
+            print(err)
+        else:
+            cmd_data = cmd_meta_data.decode('utf-8',errors="backslashreplace")
         return extract_ip_mac_addr_name(cmd_data,device_addr_list[0],device_addr_list[1])
         
 
@@ -68,8 +88,8 @@ def Device_Details():
 #if device isn't connected then return None
 def get_device_details():
     return Device_Details()
+   
     
-
 #get the ip , mac address and name of devices as list of tuples
 def extract_ip_mac_addr_name(string,device_inet_addr,device_mac_addr):
     
@@ -149,7 +169,7 @@ def extract_ip_mac_addr_name(string,device_inet_addr,device_mac_addr):
     return extract_data
 
 
-
+#print(get_device_details())
 
 
 

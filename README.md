@@ -23,3 +23,24 @@ Dependencies Modules :
  6. rssi
     
     Cmd Used : python3 -m pip install rssi
+    
+7. getmac
+   Cmd Used : 
+   
+8. speedtest
+   follow the below commands :
+   
+   sudo apt-get install gnupg1 apt-transport-https dirmngr
+   
+   export INSTALL_KEY=379CE192D401AB61
+
+   sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys $INSTALL_KEY
+
+   echo "deb https://ookla.bintray.com/debian generic main" | sudo tee  /etc/apt/sources.list.d/speedtest.list
+
+
+   sudo apt-get update
+
+   sudo apt-get install speedtest
+
+9. pywifi

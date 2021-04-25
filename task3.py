@@ -160,7 +160,7 @@ def Get2_4GHzAnd5GHz_Data(WIFI_INTERFACE):
         
         return [Data_2_4GHz_tuple,Data_5GHz_tuple]       
     else:
-        messagebox.showerror("Error in iwlist scan command extraction")
+        messagebox.showerror("Command Error Window","Error in iwlist scan command extraction")
         
 ############################################################################
 
@@ -180,9 +180,14 @@ def get_both_freq_data():
     try:
         iface_obj = wifi_obj.interfaces()
 
-    except:
-        print("Required sudo permissions to access wifi interface")
-        return -1
+    except Exception as err:
+        ErrorName = type(err).__name__
+        
+        if ErrorName == "FileNotFoundError":
+            return None
+        else:
+            messagebox.showinfo("Permissions Window","Required sudo permissions to access wifi interface")
+            return -1
     else:
         iface_obj = wifi_obj.interfaces()
         WIFI_INTERFACE = iface_obj[1].name()#get the current interface name    

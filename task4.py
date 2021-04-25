@@ -14,14 +14,15 @@ def extract_data_cmd():
     data = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     data= data.stdout.read().decode('ascii',errors="backslashreplace")
     
-    
     data = data.split("\n")
     return data
 
-#def get_speed_data():
-def get_speed_data(pipe_obj):
+def get_speed_data():
+#def get_speed_data(pipe_obj):
     if not (check_connection_state.check_connection_state()):
-        pipe_obj.send(None)
+        #print("Error while checking connection state")
+        #pipe_obj.send(None)
+        return None
     else:    
         
         data = extract_data_cmd()
@@ -47,10 +48,11 @@ def get_speed_data(pipe_obj):
                 hosted_name = line[index+len("Hosted by"):-21]
                 list_data.append(str(hosted_name))        
         
-        pipe_obj.send(list_data)
+        #pipe_obj.send(list_data)
+        return list_data
 
 
-
+#get_speed_data()
 
 
     

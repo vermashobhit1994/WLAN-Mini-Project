@@ -12,6 +12,8 @@ import convert_list_of_tuples
 import check_connection_state
 
 
+from Error_Flags import *
+
 def extract_essid_signal_strength(WIFI_INTERFACE):
     
     #to extract the raw data of cell 
@@ -72,8 +74,14 @@ def get_essid_signal_strength_state():
         #getting all interfaces 
         iface_obj = wifi_obj.interfaces()
 
-    except:
-        return -1#if aren't able to get the wifi interface
+    except Exception as err:
+        ErrorName = type(err).__name__
+        
+        
+        if ErrorName == "FileNotFoundError":
+            return CONNECTION_ERROR#if not connected to WiFi then no interface name is found
+        else:
+            return PERMISSION_ERROR
     else:
         iface_obj = wifi_obj.interfaces()
         
